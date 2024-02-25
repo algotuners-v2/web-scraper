@@ -7,7 +7,7 @@ import (
 
 func main() {
 	go func() {
-		chat_gpt.Run("", "")
+		chat_gpt.Run("", "", false)
 	}()
 	time.Sleep(time.Minute)
 	chat_gpt.GetResponse(

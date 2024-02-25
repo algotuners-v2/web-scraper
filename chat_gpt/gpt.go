@@ -22,14 +22,21 @@ var (
 	tabContexts = make(map[string]context.Context)
 )
 
-func createNewUndetectedContext() context.Context {
-	ctx, _, err := cu.New(
-		cu.NewConfig(
-		// cu.WithHeadless(),
+func createNewUndetectedContext(headless bool) context.Context {
+	var ctx context.Context
+	var err error
+	if headless {
+		ctx, _, err = cu.New(
+			cu.NewConfig(
+				cu.WithHeadless(),
+			),
+		)
+	} else {
+		ctx, _, err = cu.New(
+			cu.NewConfig(),
+		)
+	}
 
-		// cu.WithTimeout(15 * time.Second),
-		),
-	)
 	if err != nil {
 		panic(err)
 	}
@@ -196,8 +203,8 @@ func GetResponse(ctx context.Context, message string) string {
 	return getLatestResponseFromChat(ctx)
 }
 
-func Run(email string, password string) {
-	ctx := createNewUndetectedContext()
+func Run(email string, password string, headless bool) {
+	ctx := createNewUndetectedContext(headless)
 	openChatGptLoginPage(ctx)
 	handleTypingEmailAndSubmit(ctx, email)
 	handleTypingPasswordAndSubmit(ctx, password)

@@ -202,6 +202,7 @@ func getLatestResponseFromChat(ctx context.Context) string {
 }
 
 func GetResponse(ctx context.Context, message string) string {
+	log.Println("generating reponse for: " + message)
 	if err := chromedp.Run(
 		ctx,
 		chromedp.WaitVisible(`#prompt-textarea`, chromedp.ByID),
@@ -209,6 +210,7 @@ func GetResponse(ctx context.Context, message string) string {
 		chromedp.Click("[data-testid='send-button']"),
 		chromedp.Sleep(5*time.Second),
 	); err != nil {
+		log.Println("panic while generating response")
 		panic("Error finding text area or sending message:" + err.Error())
 	}
 	return getLatestResponseFromChat(ctx)

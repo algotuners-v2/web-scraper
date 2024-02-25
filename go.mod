@@ -1,4 +1,4 @@
-module web-scraper
+module github.com/algotuners-v2/web-scraper
 
 go 1.20
 

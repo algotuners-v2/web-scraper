@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/algotuners-v2/web-scraper/chat_gpt"
 	"time"
-	"web-scraper/chat_gpt"
 )
 
 func main() {

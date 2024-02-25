@@ -66,7 +66,7 @@ func openChatGptLoginPage(ctx context.Context) {
 		fmt.Println("Error navigating to login page:", err)
 		return
 	}
-
+	log.Print("Chat-gpt login page opened.")
 	if err := chromedp.Run(
 		ctx,
 		chromedp.Click("button", chromedp.ByQuery),
@@ -75,6 +75,7 @@ func openChatGptLoginPage(ctx context.Context) {
 		fmt.Println("Error clicking login button:", err)
 		return
 	}
+	log.Print("Chat-gpt login button clicked.")
 }
 
 func handleTypingEmailAndSubmitForVarient1(ctx context.Context, email string) {
@@ -86,6 +87,7 @@ func handleTypingEmailAndSubmitForVarient1(ctx context.Context, email string) {
 	); err != nil {
 		panic(err)
 	}
+	log.Print("email entered in variant 1")
 	if err := chromedp.Run(
 		ctx, chromedp.Click(`//button[contains(@class,'_button-login-id')]`),
 		chromedp.Sleep(time.Second*3),
@@ -93,6 +95,7 @@ func handleTypingEmailAndSubmitForVarient1(ctx context.Context, email string) {
 		fmt.Println("Error clicking submit button for email:", err)
 		return
 	}
+	log.Print("email submitted in variant 1")
 }
 
 func handleTypingEmailAndSubmitForVarient2(ctx context.Context, email string) {
@@ -105,9 +108,11 @@ func handleTypingEmailAndSubmitForVarient2(ctx context.Context, email string) {
 		fmt.Println("Error typing email:", err)
 		return
 	}
+	log.Print("email entered in variant 2")
 	if err := chromedp.Run(ctx, chromedp.Click(`button.continue-btn`), chromedp.Sleep(time.Second*3)); err != nil {
 		panic(err)
 	}
+	log.Print("email submitted in variant 2")
 }
 
 func handleTypingEmailAndSubmit(ctx context.Context, email string) {
@@ -119,14 +124,17 @@ func handleTypingEmailAndSubmit(ctx context.Context, email string) {
 		panic(err)
 	}
 	if exists {
+		log.Print("Chat-gpt email login variant 1 found")
 		handleTypingEmailAndSubmitForVarient1(ctx, email)
 	} else {
+		log.Print("Chat-gpt email login variant 2 found")
 		handleTypingEmailAndSubmitForVarient2(ctx, email)
 		handleTypingEmailAndSubmitForVarient1(ctx, email)
 	}
 }
 
 func handleTypingPasswordAndSubmit(ctx context.Context, password string) {
+	log.Print("typing password for chatgpt")
 	if err := chromedp.Run(
 		ctx,
 		chromedp.SendKeys(`input[type="password"]`, password, chromedp.ByQuery),
@@ -142,6 +150,7 @@ func handleTypingPasswordAndSubmit(ctx context.Context, password string) {
 		fmt.Println("Error clicking login with email/password button:", err)
 		return
 	}
+	log.Print("password submitted.")
 }
 
 func openAllChatsInDifferentTabs(ctx context.Context) {
@@ -157,6 +166,7 @@ func openAllChatsInDifferentTabs(ctx context.Context) {
 			return
 		}
 		wg.Done()
+		log.Print("NewsClassifier tab opened...")
 	}()
 	go func() {
 		if err := chromedp.Run(
@@ -168,6 +178,7 @@ func openAllChatsInDifferentTabs(ctx context.Context) {
 			return
 		}
 		wg.Done()
+		log.Print("RandomShortNoFollowUp tab opened...")
 	}()
 	wg.Wait()
 }
